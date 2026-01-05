@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ApiResponse<Void> handleBusiness(BusinessException ex){
+    public ApiResponse<void> handleBusiness(BusinessException ex){
         return ApiResponse.error(ex.getErrorCode(), ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<Void> handleValidation(MethodArgumentNotValidException ex){
+    public ApiResponse<void> handleValidation(MethodArgumentNotValidException ex){
         return ApiResponse.error(StandardResponseCode.VALIDATION_ERROR,
                 StandardResponseCode.VALIDATION_ERROR.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    public ApiResponse<Void> handleGeneric(Exception ex){
+    public ApiResponse<void> handleGeneric(Exception ex){
         return ApiResponse.error(StandardResponseCode.INTERNAL_ERROR, StandardResponseCode.INTERNAL_ERROR.getMessage());
     }
 }
