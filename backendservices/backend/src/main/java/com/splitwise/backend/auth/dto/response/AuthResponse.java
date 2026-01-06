@@ -16,5 +16,19 @@ public class AuthResponse {
 		this.name   = name;
 	}
 	
+	public UUID getUserId () {
+		return userId;
+	}
 	
+	public String getName () {
+		return name;
+	}
+	
+	public String getPhone () {
+		return phone;
+	}
+	
+	public String getEmail () {
+		return email;
+	}
 }
