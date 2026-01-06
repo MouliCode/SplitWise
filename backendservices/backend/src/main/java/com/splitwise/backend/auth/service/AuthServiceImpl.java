@@ -44,13 +44,13 @@ public class AuthServiceImpl implements AuthService {
 		user.setPhone (request.getPhone ());
 		user.setPasswordHash (passwordEncoder.encode (request.getPassword ()));
 		
-		repo.save (user);
+		User savedUser = repo.save (user);
 		
 		return new AuthResponse (
-				user.getId (),
-				user.getName (),
-				user.getEmail (),
-				user.getPhone ()
+				savedUser.getId (),
+				savedUser.getName (),
+				savedUser.getEmail (),
+				savedUser.getPhone ()
 		);
 	}
 	
