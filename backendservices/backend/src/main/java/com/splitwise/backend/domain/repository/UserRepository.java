@@ -1,6 +1,6 @@
-package com.splitwise.backend.auth.dao.repository;
+package com.splitwise.backend.domain.repository;
 
-import com.splitwise.backend.auth.dao.entity.User;
+import com.splitwise.backend.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
