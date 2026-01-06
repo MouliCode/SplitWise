@@ -1,4 +1,4 @@
-package com.splitwise.backend.auth.dao.entity;
+package com.splitwise.backend.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

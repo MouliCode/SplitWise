@@ -1,7 +1,7 @@
 package com.splitwise.backend.auth.service;
 
-import com.splitwise.backend.auth.dao.entity.User;
-import com.splitwise.backend.auth.dao.repository.UserRepository;
+import com.splitwise.backend.domain.entity.User;
+import com.splitwise.backend.domain.repository.UserRepository;
 import com.splitwise.backend.auth.dto.request.LoginRequest;
 import com.splitwise.backend.auth.dto.request.SignupRequest;
 import com.splitwise.backend.auth.dto.response.AuthResponse;
