@@ -8,7 +8,9 @@ import com.splitwise.backend.auth.dto.response.AuthResponse;
 import com.splitwise.backend.common.exception.BusinessException;
 import com.splitwise.backend.common.exception.StandardResponseCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthServiceImpl implements AuthService {
 	
 	private final UserRepository        repo;
