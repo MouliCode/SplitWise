@@ -1,12 +1,12 @@
 package com.splitwise.backend.auth.service;
 
-import com.splitwise.backend.domain.entity.User;
-import com.splitwise.backend.domain.repository.UserRepository;
 import com.splitwise.backend.auth.dto.request.LoginRequest;
 import com.splitwise.backend.auth.dto.request.SignupRequest;
 import com.splitwise.backend.auth.dto.response.AuthResponse;
 import com.splitwise.backend.common.exception.BusinessException;
 import com.splitwise.backend.common.exception.StandardResponseCode;
+import com.splitwise.backend.domain.entity.User;
+import com.splitwise.backend.domain.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,8 +62,7 @@ public class AuthServiceImpl implements AuthService {
 					StandardResponseCode.EMAIL_OR_PHONE_ERROR.getMessage ());
 		}
 		
-		User user = request.getEmail () != null || request.getPhone () != null
-		            ? repo.findByEmail (request.getEmail ())
+		User user = request.getEmail () != null ? repo.findByEmail (request.getEmail ())
 				              .orElseThrow (() -> new BusinessException (StandardResponseCode.EMAIL_OR_PHONE_ERROR,
 						              StandardResponseCode.EMAIL_OR_PHONE_ERROR.getMessage ()))
 		            : repo.findByPhone (request.getPhone ())
