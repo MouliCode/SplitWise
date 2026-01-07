@@ -9,7 +9,10 @@ public enum StandardResponseCode {
 	EMAIL_OR_PHONE_ERROR ("email or phone number is required"),
 	EMAIL_EXISTS ("email already exists"),
 	PHONE_NUMBER_EXISTS ("phone number already exists"),
-	PASSWORD_ERROR("invalid password");
+	PASSWORD_ERROR("invalid password"),
+	UNAUTHORIZED("user not authenticated"),
+	USER_NOT_FOUND("user not found");
+	
 	
 	private final String message;
 	
