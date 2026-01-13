@@ -1,5 +1,6 @@
 package com.splitwise.backend.user.service;
 
+import com.splitwise.backend.common.dto.response.ApiResponse;
 import com.splitwise.backend.common.exception.BusinessException;
 import com.splitwise.backend.common.exception.StandardResponseCode;
 import com.splitwise.backend.domain.entity.User;
@@ -10,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -18,31 +21,36 @@ public class UserServiceImpl implements UserService {
 	public UserServiceImpl (UserRepository repo) { this.repo = repo; }
 	
 	@Override
-	public UserResponse getCurrentUser () {
+	public UserResponse getCurrentUser (String phone) {
+	
+	User user = repo.findByPhone (phone)
+									  .orElseThrow (() -> new RuntimeException ("User not found"));
+	   
+	   return mapToResponse (user);
 		
-		Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
-		
-		if (auth == null || !auth.isAuthenticated ()
-				    || "anonymousUser".equals (auth.getPrincipal ())) {
-			throw new BusinessException (StandardResponseCode.UNAUTHORIZED,
-					StandardResponseCode.UNAUTHORIZED.getMessage ());
-		}
-		
-		String identifier = auth.getName ();
-
-
-//		UserContext ctx = UserContext.get ();
-
-//		if (ctx == null) {
+//		Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
+//
+//		if (auth == null || !auth.isAuthenticated ()
+//				    || "anonymousUser".equals (auth.getPrincipal ())) {
 //			throw new BusinessException (StandardResponseCode.UNAUTHORIZED,
 //					StandardResponseCode.UNAUTHORIZED.getMessage ());
 //		}
 //
-		User user =
-				repo.findByEmail (identifier).orElseThrow (() -> new BusinessException (StandardResponseCode
-				.USER_NOT_FOUND, StandardResponseCode.USER_NOT_FOUND.getMessage ()));
-
-		return mapToResponse (user);
+//		String identifier = auth.getName ();
+//
+//
+////		UserContext ctx = UserContext.get ();
+//
+////		if (ctx == null) {
+////			throw new BusinessException (StandardResponseCode.UNAUTHORIZED,
+////					StandardResponseCode.UNAUTHORIZED.getMessage ());
+////		}
+////
+//		User user =
+//				repo.findByEmail (identifier).orElseThrow (() -> new BusinessException (StandardResponseCode
+//				.USER_NOT_FOUND, StandardResponseCode.USER_NOT_FOUND.getMessage ()));
+//
+//		return mapToResponse (user);
 	}
 	
 	@Override

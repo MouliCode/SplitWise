@@ -5,7 +5,7 @@ import com.splitwise.backend.user.dto.UserResponse;
 
 public interface UserService {
 	
-	UserResponse getCurrentUser ();
+	UserResponse getCurrentUser (String phone);
 	
 	UserResponse updateProfile (UpdateUserRequest request);
 }
