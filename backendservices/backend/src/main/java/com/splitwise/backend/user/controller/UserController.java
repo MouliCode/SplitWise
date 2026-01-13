@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +21,8 @@ public class UserController {
 	public UserController (UserService service) { this.service = service; }
 	
 	@GetMapping("/me")
-	public ApiResponse<UserResponse> me(){
-		return ApiResponse.success (service.getCurrentUser ());
+	public ApiResponse<UserResponse> me(@RequestParam String phone){
+		return ApiResponse.success (service.getCurrentUser (phone));
 	}
 	
 	@PutMapping("/update")
