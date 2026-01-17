@@ -1,81 +1,65 @@
 package com.splitwise.backend.user.service;
 
-import com.splitwise.backend.common.dto.response.ApiResponse;
 import com.splitwise.backend.common.exception.BusinessException;
 import com.splitwise.backend.common.exception.StandardResponseCode;
+import com.splitwise.backend.common.security.SecurityContextUtil;
 import com.splitwise.backend.domain.entity.User;
 import com.splitwise.backend.domain.repository.UserRepository;
-import com.splitwise.backend.user.dto.UpdateUserRequest;
 import com.splitwise.backend.user.dto.UserResponse;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
-	private final UserRepository repo;
-	
-	public UserServiceImpl (UserRepository repo) { this.repo = repo; }
-	
-	@Override
-	public UserResponse getCurrentUser (String phone) {
-	
-	User user = repo.findByPhone (phone)
-									  .orElseThrow (() -> new RuntimeException ("User not found"));
-	   
-	   return mapToResponse (user);
-		
-//		Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
+   
+   private final UserRepository userRepository;
+   
+   public UserServiceImpl (UserRepository userRepository) {
+	  this.userRepository = userRepository;
+   }
+   
+   @Override
+   public UserResponse getCurrentUser () {
+	  
+	  UUID userId = SecurityContextUtil.getCurrentUserId ();
+	  
+	  User user = userRepository.findById (userId)
+						  .orElseThrow (() -> new BusinessException (StandardResponseCode.USER_NOT_FOUND,
+								  StandardResponseCode.USER_NOT_FOUND.getMessage ()));
+	  
+	  return new UserResponse (
+			  user.getId (),
+			  user.getName (),
+			  user.getEmail (),
+			  user.getPhone ()
+	  );
+   }
+
+
+//   @Override
+//   public UserResponse updateProfile (UpdateUserRequest request) {
 //
-//		if (auth == null || !auth.isAuthenticated ()
-//				    || "anonymousUser".equals (auth.getPrincipal ())) {
-//			throw new BusinessException (StandardResponseCode.UNAUTHORIZED,
-//					StandardResponseCode.UNAUTHORIZED.getMessage ());
-//		}
+//	  User user = new User ();
 //
-//		String identifier = auth.getName ();
+//	  user.setName (request.getName ());
+//	  user.setPhone (request.getPhone ());
+//	  user.setEmail (request.getEmail ());
+//	  user.setPasswordHash (request.getPassword ());
 //
+//	  User savedUser = repo.save (user);
 //
-////		UserContext ctx = UserContext.get ();
+//	  return mapToResponse (savedUser);
+//   }
 //
-////		if (ctx == null) {
-////			throw new BusinessException (StandardResponseCode.UNAUTHORIZED,
-////					StandardResponseCode.UNAUTHORIZED.getMessage ());
-////		}
-////
-//		User user =
-//				repo.findByEmail (identifier).orElseThrow (() -> new BusinessException (StandardResponseCode
-//				.USER_NOT_FOUND, StandardResponseCode.USER_NOT_FOUND.getMessage ()));
+//   private UserResponse mapToResponse (User user) {
+//	  return new UserResponse (
+//			  user.getId (),
+//			  user.getName (),
+//			  user.getEmail (),
+//			  user.getPhone ()
+//	  );
+//   }
 //
-//		return mapToResponse (user);
-	}
-	
-	@Override
-	public UserResponse updateProfile (UpdateUserRequest request) {
-		
-		User user = new User ();
-		
-		user.setName (request.getName ());
-		user.setPhone (request.getPhone ());
-		user.setEmail (request.getEmail ());
-		user.setPasswordHash (request.getPassword ());
-		
-		User savedUser = repo.save (user);
-		
-		return mapToResponse (savedUser);
-	}
-	
-	private UserResponse mapToResponse (User user) {
-		return new UserResponse (
-				user.getId (),
-				user.getName (),
-				user.getEmail (),
-				user.getPhone ()
-		);
-	}
-	
-	
+
 }

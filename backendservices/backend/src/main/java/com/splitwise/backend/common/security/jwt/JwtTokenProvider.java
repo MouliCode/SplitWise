@@ -15,44 +15,50 @@ import java.util.UUID;
 public class JwtTokenProvider {
    
    private final SecretKey secretKey;
-   private final long expirationMs;
+   private final long      expirationMs;
    
-   public JwtTokenProvider(
+   public JwtTokenProvider (
 		   @Value("${jwt.secret}") String secret,
 		   @Value("${jwt.expiration}") long expirationMs
    ) {
-	  this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+	  this.secretKey    = Keys.hmacShaKeyFor (secret.getBytes (StandardCharsets.UTF_8));
 	  this.expirationMs = expirationMs;
    }
    
-   public String generateToken(UUID userId, String name) {
-	  return Jwts.builder()
-					 .subject(userId.toString())
-					 .claim("name", name)
-					 .issuedAt(new Date())
-					 .expiration(new Date(System.currentTimeMillis() + expirationMs))
-					 .signWith(secretKey)
-					 .compact();
+   public String generateToken (UUID userId, String name) {
+	  return Jwts.builder ()
+					 .subject (userId.toString ())
+					 .claim ("name", name)
+					 .issuedAt (new Date ())
+					 .expiration (new Date (System.currentTimeMillis () + expirationMs))
+					 .signWith (secretKey)
+					 .compact ();
    }
    
-   public UUID extractUserId(String token) {
-	  return UUID.fromString(getClaims(token).getSubject());
+   public UUID extractUserId (String token) {
+	  return UUID.fromString (getClaims (token).getSubject ());
    }
    
-   public boolean validateToken(String token) {
+   public UUID getUserIdFromToken (String token) {
+	  Claims claims = getClaims (token);
+	  
+	  return UUID.fromString (claims.getSubject ());
+   }
+   
+   public boolean validateToken (String token) {
 	  try {
-		 getClaims(token);
+		 getClaims (token);
 		 return true;
 	  } catch (Exception e) {
 		 return false;
 	  }
    }
    
-   private Claims getClaims(String token) {
-	  return Jwts.parser()
-					 .verifyWith(secretKey)
-					 .build()
-					 .parseSignedClaims(token)
-					 .getPayload();
+   private Claims getClaims (String token) {
+	  return Jwts.parser ()
+					 .verifyWith (secretKey)
+					 .build ()
+					 .parseSignedClaims (token)
+					 .getPayload ();
    }
 }

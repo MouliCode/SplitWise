@@ -34,27 +34,27 @@ public class AuthServiceImpl implements AuthService {
    @Override
    public AuthResponse signup (SignupRequest request) {
 	  
-	  if (request.getEmail () == null && request.getPhone () == null) {
+	  if (request.email () == null && request.phone () == null) {
 		 throw new BusinessException (StandardResponseCode.EMAIL_OR_PHONE_ERROR,
 				 StandardResponseCode.EMAIL_OR_PHONE_ERROR.getMessage ());
 	  }
 	  
-	  if (request.getEmail () != null && userRepository.existsByEmail (request.getEmail ())) {
+	  if (request.email() != null && userRepository.existsByEmail (request.email ())) {
 		 throw new BusinessException (StandardResponseCode.EMAIL_EXISTS,
 				 StandardResponseCode.EMAIL_EXISTS.getMessage ());
 	  }
 	  
-	  if (request.getPhone () != null && userRepository.existsByPhone (request.getPhone ())) {
+	  if (request.phone () != null && userRepository.existsByPhone (request.phone ())) {
 		 throw new BusinessException (StandardResponseCode.PHONE_NUMBER_EXISTS,
 				 StandardResponseCode.PHONE_NUMBER_EXISTS.getMessage ());
 	  }
 	  
 	  User user = new User ();
 	  user.setId (UUID.randomUUID ());
-	  user.setName (request.getName ());
-	  user.setEmail (request.getEmail ());
-	  user.setPhone (request.getPhone ());
-	  user.setPasswordHash (passwordEncoder.encode (request.getPassword ()));
+	  user.setName (request.name ());
+	  user.setEmail (request.email ());
+	  user.setPhone (request.phone ());
+	  user.setPasswordHash (passwordEncoder.encode (request.password ()));
 	  
 	  User savedUser = userRepository.save (user);
 	  
@@ -75,19 +75,19 @@ public class AuthServiceImpl implements AuthService {
    @Override
    public AuthResponse login (LoginRequest request) {
 	  
-	  if (request.getEmail () == null && request.getPhone () == null) {
+	  if (request.email () == null && request.phone () == null) {
 		 throw new BusinessException (StandardResponseCode.EMAIL_OR_PHONE_ERROR,
 				 StandardResponseCode.EMAIL_OR_PHONE_ERROR.getMessage ());
 	  }
 	  
-	  User user = request.getEmail () != null ? userRepository.findByEmail (request.getEmail ())
+	  User user = request.email () != null ? userRepository.findByEmail (request.email ())
 														.orElseThrow (() -> new BusinessException (StandardResponseCode.EMAIL_OR_PHONE_ERROR,
 																StandardResponseCode.EMAIL_OR_PHONE_ERROR.getMessage ()))
-											  : userRepository.findByPhone (request.getPhone ())
+											  : userRepository.findByPhone (request.phone ())
 														.orElseThrow (() -> new BusinessException (StandardResponseCode.EMAIL_OR_PHONE_ERROR,
 																StandardResponseCode.EMAIL_OR_PHONE_ERROR.getMessage ()));
 	  
-	  if(!passwordEncoder.matches (request.getPassword (), user.getPasswordHash ())){
+	  if(!passwordEncoder.matches (request.password (), user.getPasswordHash ())){
 		 throw new BusinessException (StandardResponseCode.PASSWORD_ERROR, StandardResponseCode.PASSWORD_ERROR.getMessage ());
 	  }
 	  
@@ -107,10 +107,10 @@ public class AuthServiceImpl implements AuthService {
 	  
 	  Optional<User> userOpt;
 	  
-	  if(request.getEmail () != null && !request.getEmail ().isBlank ()){
-		 userOpt = userRepository.findByEmail (request.getEmail ());
+	  if(request.email () != null && !request.email ().isBlank ()){
+		 userOpt = userRepository.findByEmail (request.email ());
 	  }else{
-		 userOpt = userRepository.findByPhone (request.getPhone ());
+		 userOpt = userRepository.findByPhone (request.phone ());
 	  }
 	  
 	  return userOpt.orElseThrow (() ->

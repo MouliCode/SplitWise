@@ -23,56 +23,55 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
    private final JwtTokenProvider jwtTokenProvider;
    private final UserRepository   userRepository;
    
-   public JwtAuthenticationFilter(
+   public JwtAuthenticationFilter (
 		   JwtTokenProvider jwtTokenProvider,
 		   UserRepository userRepository
    ) {
 	  this.jwtTokenProvider = jwtTokenProvider;
-	  this.userRepository = userRepository;
+	  this.userRepository   = userRepository;
    }
    
    @Override
-   protected void doFilterInternal(
+   protected void doFilterInternal (
 		   HttpServletRequest request,
 		   HttpServletResponse response,
 		   FilterChain filterChain
    ) throws ServletException, IOException {
 	  
-	  String authHeader = request.getHeader("Authorization");
+	  String authHeader = request.getHeader ("Authorization");
 	  
-	  if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-		 filterChain.doFilter(request, response);
+	  if (authHeader == null || !authHeader.startsWith ("Bearer ")) {
+		 filterChain.doFilter (request, response);
 		 return;
 	  }
 	  
-	  String token = authHeader.substring(7);
+	  String token = authHeader.substring (7);
 	  
-	  if (!jwtTokenProvider.validateToken(token)) {
-		 filterChain.doFilter(request, response);
+	  if (!jwtTokenProvider.validateToken (token)) {
+		 filterChain.doFilter (request, response);
 		 return;
 	  }
 	  
-	  UUID userId = jwtTokenProvider.extractUserId(token);
+	  UUID userId = jwtTokenProvider.extractUserId (token);
 	  
-	  Optional<User> userOpt = userRepository.findById(userId);
+	  Optional<User> userOpt = userRepository.findById (userId);
 	  
-	  if (userOpt.isPresent()) {
-		 User user = userOpt.get();
+	  if (userOpt.isPresent ()) {
 		 
 		 UsernamePasswordAuthenticationToken authentication =
-				 new UsernamePasswordAuthenticationToken(
-						 user,
+				 new UsernamePasswordAuthenticationToken (
+						 userId,
 						 null,
-						 Collections.emptyList()
+						 Collections.emptyList ()
 				 );
 		 
-		 authentication.setDetails(
-				 new WebAuthenticationDetailsSource().buildDetails(request)
+		 authentication.setDetails (
+				 new WebAuthenticationDetailsSource ().buildDetails (request)
 		 );
 		 
-		 SecurityContextHolder.getContext().setAuthentication(authentication);
+		 SecurityContextHolder.getContext ().setAuthentication (authentication);
 	  }
 	  
-	  filterChain.doFilter(request, response);
+	  filterChain.doFilter (request, response);
    }
 }
