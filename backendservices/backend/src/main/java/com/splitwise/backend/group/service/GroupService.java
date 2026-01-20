@@ -9,5 +9,7 @@ public interface GroupService {
    
    GroupResponse createGroup(CreateGroupRequestDTO request);
    
+   boolean existsBYGroup_name(CreateGroupRequestDTO request);
+   
    List<GroupResponse> myGroups();
 }
