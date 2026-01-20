@@ -37,6 +37,11 @@ public class GroupServiceImpl implements  GroupService{
    }
    
    @Override
+   public boolean existsBYGroup_name (CreateGroupRequestDTO request) {
+	  return true;
+   }
+   
+   @Override
    public List<GroupResponse> myGroups () {
 	 
 	  UUID currentUserId = SecurityContextUtil.getCurrentUserId ();
