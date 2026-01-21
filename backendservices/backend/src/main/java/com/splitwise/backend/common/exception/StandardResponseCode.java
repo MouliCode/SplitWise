@@ -13,7 +13,8 @@ public enum StandardResponseCode {
    UNAUTHORIZED ("user not authenticated"),
    USER_NOT_FOUND ("user not found"),
    USER_ALREADY_IN_GROUP ("user already exists in group"),
-   GROUP_NOT_FOUND ("Group not found");
+   GROUP_NOT_FOUND ("Group not found"),
+   PAYER_NOT_IN_GROUP("payer not in group");
    
    
    private final String message;
