@@ -66,6 +66,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 	  expense.setAmount (request.amount ());
 	  expense.setDescription (request.description ());
 	  expense.setPaidBy (payer);
+	  expense.setSplitType (request.splitType ());
 	  
 	  expenseRepository.save(expense);
    }
