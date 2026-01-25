@@ -1,11 +1,14 @@
 package com.splitwise.backend.expense.domain;
 
 import com.splitwise.backend.domain.entity.User;
+import com.splitwise.backend.expense.SplitType;
 import com.splitwise.backend.group.entity.Group;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,12 +26,25 @@ public class Expense {
    @JoinColumn(name = "paid_by", nullable = false)
    private User paidBy;
    
-   @Column(nullable = false)
+   @Column(nullable = false, precision = 12, scale = 2)
    private BigDecimal amount;
    
    private String description;
    
-   private LocalDateTime createdAt;
+   @Enumerated(EnumType.STRING)
+   @Column(name = "split_type", nullable = false)
+   private SplitType splitType;
+   
+   @OneToMany(
+		   mappedBy = "expense",
+					 cascade = CascadeType.ALL,
+					 orphanRemoval = true
+   )
+   
+   private List<ExpenseSplit> splits = new ArrayList<> ();
+   
+   @Column(name = "created_at")
+   private LocalDateTime       createdAt;
    
    @PrePersist
    void prePersist () {
@@ -82,5 +98,13 @@ public class Expense {
    
    public void setCreatedAt (LocalDateTime createdAt) {
 	  this.createdAt = createdAt;
+   }
+   
+   public void setSplitType (SplitType splitType) {
+	  this.splitType = splitType;
+   }
+   
+   public void setSplits (List<ExpenseSplit> splits) {
+	  this.splits = splits;
    }
 }
