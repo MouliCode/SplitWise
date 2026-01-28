@@ -107,4 +107,12 @@ public class Expense {
    public void setSplits (List<ExpenseSplit> splits) {
 	  this.splits = splits;
    }
+   
+   public SplitType getSplitType () {
+	  return splitType;
+   }
+   
+   public List<ExpenseSplit> getSplits () {
+	  return splits;
+   }
 }

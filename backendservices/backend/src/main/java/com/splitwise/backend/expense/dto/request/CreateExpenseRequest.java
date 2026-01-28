@@ -23,7 +23,7 @@ public record CreateExpenseRequest(
 		
 		SplitType splitType,
 		
-		List<SplitRequest> splist
+		List<SplitRequest> splits
 
 ) {
 }

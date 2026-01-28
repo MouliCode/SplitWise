@@ -5,10 +5,12 @@ import com.splitwise.backend.common.exception.StandardResponseCode;
 import com.splitwise.backend.expense.domain.Expense;
 import com.splitwise.backend.expense.domain.ExpenseSplit;
 import com.splitwise.backend.expense.dto.request.SplitRequest;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Component
 public class ExactSplitStrategy extends AbstractSplitStrategy implements SplitStrategy{
    
    

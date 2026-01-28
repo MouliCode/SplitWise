@@ -3,11 +3,13 @@ package com.splitwise.backend.expense.service.strategy;
 import com.splitwise.backend.expense.domain.Expense;
 import com.splitwise.backend.expense.domain.ExpenseSplit;
 import com.splitwise.backend.expense.dto.request.SplitRequest;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+@Component
 public class EqualSplitStrategy  extends AbstractSplitStrategy implements SplitStrategy {
    
    
