@@ -16,7 +16,9 @@ public enum StandardResponseCode {
    GROUP_NOT_FOUND ("Group not found"),
    PAYER_NOT_IN_GROUP("payer not in group"),
    EXACT_SPLIT_TOTAL_MISMATCH("exact split total mismatch"),
-   PERCENT_MUST_TOTAL_100("percent must total 100");
+   PERCENT_MUST_TOTAL_100("percent must total 100"),
+   NO_BALANCE("no balance between fromUser and toUser"),
+   SETTLEMENT_EXCEEDS_BALANCE("settlement exceeds balance amount");
    
    
    

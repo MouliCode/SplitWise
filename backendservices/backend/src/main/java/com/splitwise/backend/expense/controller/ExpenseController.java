@@ -2,6 +2,7 @@ package com.splitwise.backend.expense.controller;
 
 import com.splitwise.backend.common.dto.response.ApiResponse;
 import com.splitwise.backend.expense.dto.request.CreateExpenseRequest;
+import com.splitwise.backend.expense.dto.response.CreateExpenseResponse;
 import com.splitwise.backend.expense.dto.response.ExpenseResponse;
 import com.splitwise.backend.expense.service.ExpenseService;
 import com.splitwise.backend.group.entity.Group;
@@ -24,11 +25,10 @@ public class ExpenseController {
    }
    
    @PostMapping
-   public ApiResponse<Void> create (
+   public ApiResponse<CreateExpenseResponse> create (
 		   @Valid @RequestBody CreateExpenseRequest request
    ) {
-	  service.createExpense (request);
-	  return ApiResponse.success (null);
+	  return ApiResponse.success (service.createExpense (request));
    }
    
    @PostMapping("/list")
