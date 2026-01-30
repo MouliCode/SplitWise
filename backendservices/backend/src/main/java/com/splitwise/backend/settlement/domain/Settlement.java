@@ -34,5 +34,13 @@ public class Settlement {
    @Column(name = "created_at", nullable = false)
    private LocalDateTime createdAt;
    
-   public Settlement (UUID uuid, User fromUser, User toUser, BigDecimal amount, LocalDateTime now) { }
+   public Settlement(){}
+   
+   public Settlement (UUID id, User fromUser, User toUser, BigDecimal amount) {
+      this.id = id;
+      this.fromUser = fromUser;
+      this.toUser = toUser;
+      this.amount = amount;
+      this.createdAt = LocalDateTime.now ();
+   }
 }
