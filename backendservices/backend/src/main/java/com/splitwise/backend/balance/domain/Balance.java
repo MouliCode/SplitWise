@@ -12,39 +12,39 @@ public class Balance {
    @EmbeddedId
    private BalanceId id;
    
-   @Column(nullable = false, precision = 18, scale = 2)
-   private BigDecimal amount;
-   
-   @ManyToOne(fetch = FetchType.LAZY)
    @MapsId("fromUser")
-   @JoinColumn(name = "from_User", nullable = false)
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "from_user")
    private User fromUser;
    
-   
-   @ManyToOne(fetch = FetchType.LAZY)
    @MapsId("toUser")
-   @JoinColumn(name= "to_User", nullable = false)
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "to_user")
    private User toUser;
    
-   protected Balance(){}
+   @Column(nullable = false)
+   private BigDecimal amount;
    
-   public Balance(User fromUser, User toUser, BigDecimal amount){
-	  this.id = new BalanceId (fromUser.getId(), toUser.getId ());
+   
+   public Balance () { }
+   
+   public Balance (User fromUser, User toUser, BigDecimal amount) {
+	  this.id       = new BalanceId (fromUser.getId (), toUser.getId ());
 	  this.fromUser = fromUser;
-	  this.toUser = toUser;
+	  this.toUser   = toUser;
+	  this.amount   = amount;
+   }
+   
+   public Balance (BalanceId id, BigDecimal amount) {
+	  this.id     = id;
 	  this.amount = amount;
    }
    
-   public Balance(BalanceId id, BigDecimal amount){
-	  this.id = id;
-	  this.amount = amount;
+   public void addAmount (BigDecimal delta) {
+	  this.amount = this.amount.add (delta);
    }
    
-   public void addAmount(BigDecimal delta){
-	  this.amount = this.amount.add(delta);
-   }
-   
-   public BigDecimal getAmount(){
+   public BigDecimal getAmount () {
 	  return amount;
    }
    

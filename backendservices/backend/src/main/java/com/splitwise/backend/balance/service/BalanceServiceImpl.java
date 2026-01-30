@@ -70,8 +70,8 @@ public class BalanceServiceImpl implements BalanceService {
 	  return balanceRepository.findById_FromUser (userId)
 					 .stream()
 					 .map(b -> new BalanceResponse (
-							 b.getId().getFromUser (),
-							 b.getId ().getToUser (),
+							 b.getId ().fromUser (),
+							 b.getId ().toUser (),
 							 b.getAmount ()
 					 ))
 					 .toList();
