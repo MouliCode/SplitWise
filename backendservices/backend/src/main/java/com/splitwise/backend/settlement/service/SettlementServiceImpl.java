@@ -5,23 +5,22 @@ import com.splitwise.backend.balance.repository.BalanceRepository;
 import com.splitwise.backend.common.exception.BusinessException;
 import com.splitwise.backend.common.exception.StandardResponseCode;
 import com.splitwise.backend.settlement.domain.Settlement;
-import com.splitwise.backend.settlement.repository.SettlementRespository;
+import com.splitwise.backend.settlement.repository.SettlementRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class SettlementServiceImpl implements SettlementService{
   
-   private final BalanceRepository     balanceRepository ;
-   private final SettlementRespository settlementReposiory;
+   private final BalanceRepository    balanceRepository ;
+   private final SettlementRepository settlementReposiory;
    
    public SettlementServiceImpl(BalanceRepository balanceRepository,
-								SettlementRespository settlementReposiory){
+								SettlementRepository settlementReposiory){
 	  this.balanceRepository = balanceRepository;
 	  this.settlementReposiory = settlementReposiory;
    }
@@ -36,8 +35,7 @@ public class SettlementServiceImpl implements SettlementService{
 			  UUID.randomUUID (),
 			  balance.getFromUser (),
 			  balance.getToUser (),
-			  amount,
-			  LocalDateTime.now()
+			  amount
 	  );
 	  
 	  settlementReposiory.save(settlement);

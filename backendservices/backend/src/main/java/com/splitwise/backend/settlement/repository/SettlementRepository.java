@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface SettlementRespository extends JpaRepository<Settlement, UUID> {
+public interface SettlementRepository extends JpaRepository<Settlement, UUID> {
 }
