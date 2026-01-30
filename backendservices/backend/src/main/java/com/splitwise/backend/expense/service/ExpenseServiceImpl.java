@@ -100,7 +100,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 	  
 	  expenseSplitRepository.saveAll (splits);
 	  
-//	  updateBalances (expense.getPaidBy ().getId (), splits);
+	  updateBalances (expense.getPaidBy ().getId (), splits);
 	  
 	  List<ExpenseSplitResponse> splitResponses =
 			  splits.stream ()
@@ -144,22 +144,30 @@ public class ExpenseServiceImpl implements ExpenseService {
    public void updateBalances (UUID payerId, List<ExpenseSplit> splits) {
 	  
 	  for (ExpenseSplit split : splits) {
-		 UUID splitUser = split.getUser ().getId ();
 		 
-		 if (splitUser.equals (payerId)) {
+		 UUID owingUserId = split.getUser ().getId ();
+		 
+		 if (owingUserId.equals (payerId)) {
 			continue;
 		 }
 		 
 		 BigDecimal amount = split.getAmount ();
 		 
-		 BalanceId id = new BalanceId (splitUser, payerId);
+		 BalanceId id = new BalanceId (owingUserId, payerId);
 		 
 		 Balance balance = balanceRepository.findById (id)
-								   .orElse(new Balance (id, BigDecimal.ZERO));
-		 
-		 balance.setAmount (balance.getAmount ().add(amount));
-		 balance.setId(id);
-		 balanceRepository.save(balance);
+								   .orElseGet (() -> {
+									  Balance b = new Balance ();
+									  b.setId (id);
+									  
+									  b.setFromUser (split.getUser ()); // owingUser
+									  b.setToUser (split.getExpense ().getPaidBy ());// payer
+									  
+									  b.setAmount (BigDecimal.ZERO);
+									  return b;
+								   });
+		 balance.setAmount (balance.getAmount ().add (amount));
+		 balanceRepository.save (balance);
 		 
 	  }
    }

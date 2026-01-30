@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface BalanceRepository extends JpaRepository<Balance, BalanceId> {
    
-   List<Balance> findById_FromUser(UUID fromUserId);
+   List<Balance> findById_FromUser(UUID fromUserId); //user owes other
    
-   Optional<Balance> findByIdFromUserAndIdToUser(UUID fromUserId, UUID toUserId);
+   Optional<Balance> findByIdFromUserAndIdToUser(UUID fromUserId, UUID toUserId); // others owe user
 }
